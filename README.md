@@ -7,6 +7,9 @@ A simple app for producing pizza orders into a Kafka topic. It is optimised for 
 
 Run `docker compose up -d` and navigate to [localhost:8080](http://localhost:8080) to see the Kafka topic with pizza order data using the Conduktor UI.
 
+![viewMessage](/images/view-message.png)
+
+![consumer-page](/images/consumer-page.png)
 
 # Changing configuration of the app
 
@@ -26,5 +29,7 @@ If you wish to modify other properties for this producer, such as security, addi
 ## Rebuild the app
 
 After saving the new config e.g. if a different bootstrap server, rebuild following the instructions in the README within `/app`.
+
+The app is published on [Dockerhub](https://hub.docker.com/r/stuzanne/kafka-data-generator).
 
 
