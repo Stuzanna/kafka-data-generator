@@ -8,8 +8,13 @@ A simple app for producing pizza orders into a Kafka topic. It is optimised for 
 Run `docker compose up -d` and navigate to [localhost:8080](http://localhost:8080) to see the Kafka topic with pizza order data using the Conduktor UI.
 
 ![viewMessage](/images/view-message.png)
+*Messages produced, seen in the Conduktor UI*
 
 ![consumer-page](/images/consumer-page.png)
+*An example message, seen in the Conduktor UI*
+
+## Docker compose architecture
+![simple-architecture](/images/simple-architecture.png)
 
 # Changing configuration of the app
 
