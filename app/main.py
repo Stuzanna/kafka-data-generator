@@ -16,7 +16,7 @@ from orderProducer import producePizzaOrder
 # --- Define Inputs ---
 bootstrap_servers = "redpanda-0:9092"
 topic_name = "orders"
-num_messages = 100
+num_messages = 100000
 messageDelaySeconds = 2
 
 
@@ -76,7 +76,6 @@ while i < num_messages:
     if (i % num_messages) == 0:
         producer.flush()
     i = i + 1
-
 producer.flush()
 
-
+print("End of orders.")
