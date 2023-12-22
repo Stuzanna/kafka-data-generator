@@ -37,7 +37,7 @@ services:
   
   data-generator:
     # this data generator
-    image: kafka-data-generator:0.x1
+    image: stuzanne/kafka-data-generator:0.1
     depends_on:
       - redpanda-0
   
