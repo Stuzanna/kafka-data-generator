@@ -76,6 +76,7 @@ while i < num_messages:
     if (i % num_messages) == 0:
         producer.flush()
     i = i + 1
+    
 producer.flush()
 
 print("End of orders.")
