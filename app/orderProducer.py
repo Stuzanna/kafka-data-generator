@@ -29,4 +29,4 @@ def producePizzaOrder(orderId = 1, fake=Faker()):
 
     key = shop
 
-    return message, key
+    return key,message
