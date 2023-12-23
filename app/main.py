@@ -15,9 +15,9 @@ from orderProducer import producePizzaOrder
 
 
 # --- Define Inputs ---
-# bootstrap_servers = "redpanda-0:9092"
-bootstrap_servers = "localhost:19092"
-topic_names = ["customers-py", "pizza-orders"]
+bootstrap_servers = "redpanda-0:9092"
+# bootstrap_servers = "localhost:19092"
+topic_names = ["customers", "pizza-orders"]
 num_messages = 1000
 messageDelaySeconds = 2
 
