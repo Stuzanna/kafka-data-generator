@@ -1,6 +1,3 @@
-import random
-import json
-
 from faker import Faker
 
 
