@@ -14,7 +14,7 @@ Run `docker compose up -d` and navigate to [localhost:8080](http://localhost:808
 *An example message, seen in the Conduktor UI*
 
 ## Docker compose architecture
-![simple-architecture](/images/simple-architecture.png)
+![simple-architecture](/images/kafka-data-generator-architecture.png)
 
 # Changing configuration of the app
 
