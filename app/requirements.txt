@@ -1,5 +1,15 @@
-confluent-kafka==2.5.3
+attrs==24.2.0
+certifi==2024.8.30
+charset-normalizer==3.4.0
+confluent-kafka==2.6.0
+fastavro==1.9.7
 Faker==21.0.0
+idna==3.10
+jsonschema==4.23.0
+jsonschema-specifications==2024.10.1
 python-dateutil==2.8.2
-six==1.16.0
+referencing==0.35.1
 requests==2.32.3
+six==1.16.0
+rpds-py==0.20.0
+urllib3==2.2.3

@@ -9,6 +9,7 @@ from confluent_kafka.schema_registry import SchemaRegistryClient
 from faker import Faker
 
 from adminTools import callback, create_topic, topic_exists
+from producer_tools import load_schema, create_serializer, produce_record
 from customerProducer import produceCustomer
 from orderProducer import producePizzaOrder
 from pizzaProducer import PizzaProvider
@@ -54,6 +55,19 @@ config = {
 schema_registry_conf = {'url': schema_registry_url, 'basic.auth.user.info': '<SR_UserName:SR_Password>'}
 schema_registry_client = SchemaRegistryClient(schema_registry_conf)
 
+# load schema, from remote schema registry or local file
+if serialization in ['json', 'avro']:
+    if schema_loc == 'local':
+        schema_str = load_schema(schema_loc, schema_file_path)
+    elif schema_loc == 'remote':
+        schema_str = load_schema(schema_loc, None, schema_id, subject, schema_registry_url)
+    else:
+        raise ValueError(f"Invalid schema location: {schema_loc}. Expected 'local' or 'remote'.")
+    serializer = create_serializer(serialization, schema_str=schema_str, schema_registry_client=schema_registry_client)
+    print(f"Success: Created {serialization.upper()} serializer.")
+else:
+    create_serializer(serialization, None, None)
+
 # Instantiate Kafka producer and admin client
 producer = Producer(config)
 
@@ -95,10 +109,15 @@ try:
                     exit()
 
                 key = next(iter(payload))
-                encoded_key = key.encode('utf-8')
+                # encoded_key = key.encode('utf-8')
                 message = json.dumps(payload[key])
-                encoded_message = message.encode('utf-8')
-                producer.produce(topic = topic, value = encoded_message, key = encoded_key, on_delivery=callback)
+                # encoded_message = message.encode('utf-8')
+                payload = {
+                "key": key,
+                "message": message
+                }
+                # producer.produce(topic = topic, value = encoded_message, key = encoded_key, on_delivery=callback)
+                produce_record(producer, payload['message'], payload['key'], topic, serialization, serializer = None)
                 producer.flush()
                 print(f'')
                 
@@ -106,6 +125,7 @@ try:
             if (counter % max_batches) == 0:
                 producer.flush()
                 print(f"Max batches ({max_batches}) reached, stopping producer.")
+                break
         
             counter += 1
         producer.flush()
