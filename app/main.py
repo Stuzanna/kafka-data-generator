@@ -64,8 +64,7 @@ try:
     for topic in topics:
         print(f"Checking if topic '{topic}' exists.")
         if not topic_exists(admin_client, topic):
-            create_topic(admin_client, topic, new_topic_partitions ,new_topic_replication_factor)
-            print(f"Topic '{topic}' created successfully.")
+            create_topic(admin_client, topic, new_topic_partitions, new_topic_replication_factor)
         else:
             print(f"Topic '{topic}' already exists.")
 except Exception as e:
