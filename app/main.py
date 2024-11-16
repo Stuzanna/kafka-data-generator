@@ -23,7 +23,7 @@ serialization = os.getenv('SERIALIZATION', None)
 print(f'SERIALIZATION: {serialization}')
 schema_loc = os.getenv('SCHEMA_LOC', None)
 print(f'SCHEMA_LOC: {schema_loc}')
-schema_id = int(os.getenv('SCHEMA_ID', None))
+schema_id = int(os.getenv('SCHEMA_ID')) if os.getenv('SCHEMA_ID') else None
 print(f'SCHEMA_ID: {schema_id}')
 subject = os.getenv('SUBJECT', None)
 print(f'SUBJECT: {subject}')
