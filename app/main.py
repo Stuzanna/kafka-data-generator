@@ -78,35 +78,45 @@ provider = PizzaProvider # from the imported module
 fake.add_provider(provider) 
 # fake has been enriched with PizzaProvider and can now be referenced
 
-# --- Create the stream ---
+# Produce messages
 counter = 0
 
-while counter < max_batches:
-    for topic in topics:
-        if topic == 'customers':
-            payload = produceCustomer()
-        elif topic == 'pizza-orders':
-            payload = producePizzaOrder(counter, fake)
-        elif topic == 'products':
-            payload = produceProduct()
-        else:
-            exit()
+try:
+    print("Start producing messages.")
+    while True:
+        while counter < max_batches:
+            for topic in topics:
+                if topic == 'customers':
+                    payload = produceCustomer()
+                elif topic == 'pizza-orders':
+                    payload = producePizzaOrder(counter, fake)
+                elif topic == 'products':
+                    payload = produceProduct()
+                else:
+                    exit()
 
-        key = next(iter(payload))
-        encoded_key = key.encode('utf-8')
-        message = json.dumps(payload[key])
-        encoded_message = message.encode('utf-8')
-        producer.produce(topic = topic, value = encoded_message, key = encoded_key, on_delivery=callback)
-        producer.flush()
-        print(f'')
+                key = next(iter(payload))
+                encoded_key = key.encode('utf-8')
+                message = json.dumps(payload[key])
+                encoded_message = message.encode('utf-8')
+                producer.produce(topic = topic, value = encoded_message, key = encoded_key, on_delivery=callback)
+                producer.flush()
+                print(f'')
+                
+            time.sleep(messageDelaySeconds)
+            if (counter % max_batches) == 0:
+                producer.flush()
+                print(f"Max batches ({max_batches}) reached, stopping producer.")
         
-    time.sleep(messageDelaySeconds)
-
-    if (counter % max_batches) == 0:
+            counter += 1
         producer.flush()
-    
-    counter += 1
+except KafkaException as e:
+    logging.error(f"Produce message error: {e}")
 
-producer.flush()
+except KeyboardInterrupt:
+    print("KeyboardInterrupt. Stopping the producer...")
 
-print(f"Max batches ({max_batches}) reached, stopping producer.")
+finally:
+    print("Attempting to flush the producer...")
+    producer.flush()
+    print("Producer has been flushed.")
