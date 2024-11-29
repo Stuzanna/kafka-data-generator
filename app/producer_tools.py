@@ -83,10 +83,15 @@ def load_schema(schema_loc: str, schema_file = None, schema_id = None, subject =
         if subject is not None:
             print(f"Fetching latest schema for subject: {subject}")
             response = requests.get(f"{schema_registry_url}/subjects/{subject}/versions/latest")
-            return response.json()["schema"]
-                    
+            response_data = response.json()
+            print(f"Schema registry response: {response_data}")
+            try:
+                return response_data["schema"]
+            except KeyError:
+                error_message = response_data.get("message", "Unknown error from schema registry")
+                print(f"Failed to fetch schema: {error_message}")
+                raise Exception(f"Schema registry error: {error_message}")              
         raise ValueError("Either schema_id or subject must be provided for remote schema")
-
     else:
         raise ValueError(f"Invalid schema location: {schema_loc}. Expected 'local' or 'remote'.")
     
@@ -124,7 +129,7 @@ def create_serializer(serialization, schema_str = None, schema_registry_client =
     elif serialization == 'avro':
         print("Creating Avro serializer...")
         return AvroSerializer(schema_registry_client, schema_str) if schema_registry_client is not None else AvroSerializer(schema_str=schema_str, conf={"auto.register.schemas":False})
-    elif serialization == None:
+    elif serialization is None:
         print('No serialization selected, skipping serializer creation.')
         return None
     else:
