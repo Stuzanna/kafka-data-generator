@@ -128,7 +128,9 @@ def create_serializer(serialization, schema_str = None, schema_registry_client =
         return JSONSerializer(schema_str, schema_registry_client) if schema_registry_client is not None else JSONSerializer(schema_str, conf={"auto.register.schemas":False})
     elif serialization == 'avro':
         print("Creating Avro serializer...")
-        return AvroSerializer(schema_registry_client, schema_str) if schema_registry_client is not None else AvroSerializer(schema_str=schema_str, conf={"auto.register.schemas":False})
+        if schema_registry_client is None:
+            raise ValueError("Avro serialization requires a Schema Registry client")
+        return AvroSerializer(schema_registry_client, schema_str)
     elif serialization is None:
         print('No serialization selected, skipping serializer creation.')
         return None
