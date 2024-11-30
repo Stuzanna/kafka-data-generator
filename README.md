@@ -20,11 +20,22 @@ Run `docker compose up -d` and navigate to [localhost:8080](http://localhost:808
 
 The configuration can be changed by setting environment variables.
 
-| Name                      | Default                           | Description                                                                                             |
-| ------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `KAFKA_BOOTSTRAP_SERVERS` | `localhost:19092`                 | The bootstrap server(s) for your Kafka cluster.                                                         |
-| `MAX_BATCHES`             | 500                               | The max batches of 3 messages (1 for each of the 3 topics) to produce, stops the producer once reached. |
-| `MESSAGE_DELAY_SECONDS`   | 2                                 | The wait time between producing messages, in seconds.                                                   |
-| `TOPICS`                  | `customers,pizza-orders,products` | Customise which of the 3 topics to use, e.g. if you only want to produce to pizza-orders then set this. |
+I'll create a comprehensive MD table documenting all the environment variables from your code. I'll follow the same format as your example.
+
+| Name                           | Default                           | Description                                                                                                                               |
+| ------------------------------ | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `KAFKA_BOOTSTRAP_SERVERS`      | `localhost:19092`                 | The bootstrap server(s) for your Kafka cluster.                                                                                           |
+| `SCHEMA_REGISTRY_URL`          | `http://localhost:8084`           | URL for the Schema Registry service.                                                                                                      |
+| `SERIALIZATION`                | `None`                            | Defines the serialization method for messages. You will need to add a schema to the schema registry for this. `avro` or `json` supported. |
+| `SCHEMA_LOC`                   | `None`                            | Location of the schema definition. `remote` or `local` if using a local schema.                                                           |
+| `SCHEMA_ID`                    | `None`                            | Numeric identifier for the schema. Must be an integer.                                                                                    |
+| `SUBJECT`                      | `None`                            | Subject name for schema registry.                                                                                                         |
+| `SCHEMA_FILE_PATH`             | `None`                            | File path to the schema definition file if local.                                                                                         |
+| `TOPICS`                       | `customers,pizza-orders,products` | Comma-separated list of topics to use. Whitespace is automatically trimmed. Default topics with fake data provided.                       |
+| `MAX_BATCHES`                  | `500`                             | Maximum number of messages batches to produce. Batch size being 1.                                                                        |
+| `MESSAGE_DELAY_SECONDS`        | `2`                               | Delay between message productions in seconds (accepts decimal values).                                                                    |
+| `NEW_TOPIC_REPLICATION_FACTOR` | `3`                               | Replication factor for new topics. Automatically set to 1 if `CLUSTER_SIZING` is 'small'.                                                 |
+| `NEW_TOPIC_PARTITIONS`         | `3`                               | Number of partitions for new topics.                                                                                                      |
+| `CLUSTER_SIZING`               | `None`                            | Cluster size configuration. Set to 'small' for demo environments with single broker.                                                      |
 
 The app is published on [Dockerhub](https://hub.docker.com/r/stuzanne/kafka-data-generator).
