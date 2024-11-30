@@ -1,0 +1,28 @@
+{
+  "namespace": "company.namespace",
+  "type": "record",
+  "name": "cars.avro",
+  
+  "fields": [
+    {
+      "name": "make",
+      "type": "string",
+      "doc": "OEM e.g. BMW"
+    },
+    {
+      "name": "model",
+      "type": "string",
+      "doc": "e.g. 3-series"
+    },
+    {
+      "name": "year",
+      "type": "string",
+      "doc": "e.g. 2024"
+    },
+    {
+        "name": "color",
+        "type": "string",
+        "doc": "e.g. red"
+      }
+  ]
+}

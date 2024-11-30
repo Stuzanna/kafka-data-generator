@@ -1,0 +1,43 @@
+{
+  "type": "record",
+  "name": "CustomerProfile",
+  "namespace": "company.namespace",
+  "fields": [
+    {
+      "name": "profile",
+      "type": {
+        "type": "record",
+        "name": "Profile",
+        "fields": [
+          {"name": "customer_id", "type": "string"},
+          {"name": "name", "type": "string"},
+          {"name": "job_title", "type": "string"},
+          {"name": "blood_group", "type": "string"},
+          {"name": "creditCardNumber", "type": "string"}
+        ]
+      }
+    },
+    {
+      "name": "address",
+      "type": {
+        "type": "record",
+        "name": "Address",
+        "fields": [
+          {"name": "country", "type": "string"},
+          {"name": "address", "type": "string"}
+        ]
+      }
+    },
+    {
+      "name": "contact",
+      "type": {
+        "type": "record",
+        "name": "Contact",
+        "fields": [
+          {"name": "email", "type": "string"},
+          {"name": "phone", "type": "string"}
+        ]
+      }
+    }
+  ]
+}
