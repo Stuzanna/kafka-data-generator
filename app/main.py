@@ -66,7 +66,7 @@ if serialization in ['json', 'avro']:
     serializer = create_serializer(serialization, schema_str=schema_str, schema_registry_client=schema_registry_client)
     print(f"Success: Created {serialization.upper()} serializer.")
 else:
-    create_serializer(serialization, None, None)
+    serializer = create_serializer(serialization, None, None)
 
 # Instantiate Kafka producer and admin client
 producer = Producer(config)
@@ -109,25 +109,21 @@ try:
                     exit()
 
                 key = next(iter(payload))
-                # encoded_key = key.encode('utf-8')
-                message = json.dumps(payload[key])
-                # encoded_message = message.encode('utf-8')
+                message = payload[key]
+
                 payload = {
                 "key": key,
                 "message": message
                 }
-                # producer.produce(topic = topic, value = encoded_message, key = encoded_key, on_delivery=callback)
-                produce_record(producer, payload['message'], payload['key'], topic, serialization, serializer = None)
+                produce_record(producer, payload['message'], payload['key'], topic, serialization, serializer)
                 producer.flush()
-                print(f'')
-                
+
+            counter += 1  
             time.sleep(messageDelaySeconds)
-            if (counter % max_batches) == 0:
+            if counter >= max_batches:
                 producer.flush()
                 print(f"Max batches ({max_batches}) reached, stopping producer.")
                 break
-        
-            counter += 1
         producer.flush()
 except KafkaException as e:
     logging.error(f"Produce message error: {e}")
