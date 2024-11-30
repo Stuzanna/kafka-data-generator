@@ -1,4 +1,19 @@
 services:
+  data-generator:
+    # this data generator
+    image: stuzanne/kafka-data-generator:0.5
+    container_name: data-gen-0
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "redpanda-0:9092"
+      NEW_TOPIC_REPLICATION_FACTOR: 1
+      # SERIALIZATION: avro
+      # SCHEMA_LOC: remote
+      # SUBJECT: 'customers-value'
+      # SCHEMA_REGISTRY_URL: http://redpanda-0:8081
+      # TOPICS: 'customers'
+    depends_on:
+      - redpanda-0
+
   redpanda-0:
     # a local Kafka
     command:
@@ -33,18 +48,9 @@ services:
       retries: 5
       start_period: 5s
   
-  data-generator:
-    # this data generator
-    image: stuzanne/kafka-data-generator:0.4
-    container_name: data-gen-0
-    environment:
-      KAFKA_BOOTSTRAP_SERVERS: "redpanda-0:9092"
-    depends_on:
-      - redpanda-0
-  
   conduktor-console:
     # a UI into Kafka from Conduktor
-    image: conduktor/conduktor-console:1.26.0
+    image: conduktor/conduktor-console:1.29.0
     container_name: conduktor-console-0
     depends_on:
       - postgresql
@@ -64,7 +70,7 @@ services:
   
   postgresql:
     # needed for the Conduktor UI 
-    image: postgres:14
+    image: postgres:16
     hostname: postgresql
     container_name: postgresql-0
     volumes:
