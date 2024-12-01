@@ -20,7 +20,7 @@ Run `docker compose up -d` and navigate to [localhost:8080](http://localhost:808
 
 The configuration can be changed by setting environment variables.
 
-I'll create a comprehensive MD table documenting all the environment variables from your code. I'll follow the same format as your example.
+Configuration options range from changing the bootstrap server and schema registry location, to serializing topics using Avro and local development schema files.
 
 | Name                           | Default                           | Description                                                                                                                               |
 | ------------------------------ | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
